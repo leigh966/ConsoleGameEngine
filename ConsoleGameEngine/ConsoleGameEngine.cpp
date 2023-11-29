@@ -7,6 +7,7 @@
 #include <string.h>
 #include <chrono>
 #include <thread>
+#include <cmath>
 
 using namespace std;
 
@@ -31,7 +32,13 @@ struct Vector2D
 };
 
 Vector2D pos = { 5.0f,5.0f };
-Vector2D facing = { 1.0f, 0.0f};
+Vector2D facing = { 0.0f, -1.0f};
+
+int roundToInt(float f)
+{
+    return round(f);
+}
+
 
 void drawMap()
 {
@@ -55,10 +62,12 @@ void drawMap()
     }
 
     // draw player
-    map[(int)(ceil(pos.y)) * MAP_WIDTH + (int)(ceil(pos.x))] = 'p';
+    map[roundToInt(pos.y) * MAP_WIDTH + roundToInt(pos.x)] = 'p';
 
     // draw player facing vector
-    map[(int)(ceil(pos.y + facing.y)) * MAP_WIDTH + (int)(ceil(pos.x + facing.x))] = '+';
+    int facingMarkerX = roundToInt(pos.x) + roundToInt(facing.x);
+    int facingMarkerY = roundToInt(pos.y) + roundToInt(facing.y);
+    map[facingMarkerY * MAP_WIDTH + facingMarkerX] = '+';
 
     char buffer[MAP_WIDTH*2 * MAP_HEIGHT + MAP_HEIGHT];
     int bufferIndex = 0;
@@ -77,6 +86,14 @@ void drawMap()
 bool keyDown(char keyCode)
 {
     return GetKeyState(keyCode) & 0x8000;
+}
+
+void rotateVector(Vector2D* vect, float deg)
+{
+    float newX = vect->x * cos(deg) - vect->y * sin(deg);
+    float newY = vect->x * sin(deg) + vect->y * cos(deg);
+    vect->x = newX;
+    vect -> y = newY;
 }
 
 bool handleControls()
@@ -106,6 +123,16 @@ bool handleControls()
         pos.x += facing.y * speed;
         pos.y += facing.x * speed;
     }
+
+    const float turnSpeed = 0.1f;
+    if (keyDown('P'))
+    {
+        rotateVector(&facing, turnSpeed);
+    }
+    if (keyDown('O'))
+    {
+        rotateVector(&facing, -turnSpeed);
+    }
     return true;
 }
 
@@ -120,6 +147,8 @@ int main()
     {
         drawMap();
         keepGoing = handleControls();
+        cout << "\nfacing.x=" << facing.x << endl;
+        cout << "facing.y=" << facing.y << endl;
         sleep_for(nanoseconds(1000));
     }
 }
