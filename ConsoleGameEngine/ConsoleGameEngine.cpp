@@ -5,6 +5,8 @@
 #include <cmath>
 #include <Windows.h>
 #include <string.h>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -25,11 +27,11 @@ Line lines[4] = { {LEFT, BOTTOM, RIGHT, BOTTOM},{LEFT, TOP, RIGHT, TOP},
 
 struct Vector2D
 {
-    int x, y;
+    float x, y;
 };
 
-Vector2D pos = { 5,5 };
-Vector2D facing = { 1, 0};
+Vector2D pos = { 5.0f,5.0f };
+Vector2D facing = { 1.0f, 0.0f};
 
 void drawMap()
 {
@@ -53,22 +55,71 @@ void drawMap()
     }
 
     // draw player
-    map[pos.y * MAP_WIDTH + pos.x] = 'p';
+    map[(int)(ceil(pos.y)) * MAP_WIDTH + (int)(ceil(pos.x))] = 'p';
 
     // draw player facing vector
-    map[(pos.y + facing.y) * MAP_WIDTH + (pos.x + facing.x)] = '+';
+    map[(int)(ceil(pos.y + facing.y)) * MAP_WIDTH + (int)(ceil(pos.x + facing.x))] = '+';
+
+    char buffer[MAP_WIDTH*2 * MAP_HEIGHT + MAP_HEIGHT];
+    int bufferIndex = 0;
     for (int y = 0; y < MAP_HEIGHT; y++)
     {
         for (int x = 0; x < MAP_WIDTH; x++)
         {
-            cout << map[y * MAP_WIDTH + x];
-            cout << ' ';
+            buffer[bufferIndex++] = map[y * MAP_WIDTH + x];
+            buffer[bufferIndex++] = ' ';
         }
-        cout << "\n";
+        buffer[bufferIndex++] = '\n';
     }
+    cout << "\033[2J\033[1;1H" << buffer; // clear screen and draw from buffer
+}
+
+bool keyDown(char keyCode)
+{
+    return GetKeyState(keyCode) & 0x8000;
+}
+
+bool handleControls()
+{
+    const float speed = 0.1f;
+    if (keyDown('Q'))
+    {
+        return false;
+    }
+    if (keyDown('W'))
+    {
+        pos.x += facing.x * speed;
+        pos.y += facing.y * speed;
+    }
+    if (keyDown('S'))
+    {
+        pos.x -= facing.x * speed;
+        pos.y -= facing.y * speed;
+    }
+    if (keyDown('A'))
+    {
+        pos.x -= facing.y * speed;
+        pos.y -= facing.x * speed;
+    }
+    if (keyDown('D'))
+    {
+        pos.x += facing.y * speed;
+        pos.y += facing.x * speed;
+    }
+    return true;
 }
 
 int main()
 {
+    using namespace std::this_thread; // sleep_for, sleep_until
+    using namespace std::chrono; // nanoseconds, system_clock, seconds
+    
+    bool keepGoing = true;
     drawMap();
+    while (keepGoing)
+    {
+        drawMap();
+        keepGoing = handleControls();
+        sleep_for(nanoseconds(1000));
+    }
 }
