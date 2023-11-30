@@ -127,7 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collision2D.cpp" />
     <ClCompile Include="ConsoleGameEngine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Collision2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

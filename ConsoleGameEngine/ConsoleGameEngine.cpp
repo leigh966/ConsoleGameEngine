@@ -8,13 +8,14 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
+#include "Collision2D.h"
 
 using namespace std;
 
-const int WIDTH = 119, HEIGHT = 119;
+const int SCREEN_WIDTH = 100, SCREEN_HEIGHT = 50;
 const int MAP_WIDTH = 10, MAP_HEIGHT = 10;
 const int FOV = 90;
-char screen[WIDTH*HEIGHT];
+
 
 struct Line
 {
@@ -39,6 +40,11 @@ int roundToInt(float f)
     return round(f);
 }
 
+
+void drawLineToScreen(int height, int x)
+{
+
+}
 
 void drawMap()
 {
@@ -91,9 +97,65 @@ bool keyDown(char keyCode)
 void rotateVector(Vector2D* vect, float deg)
 {
     float newX = vect->x * cos(deg) - vect->y * sin(deg);
-    float newY = vect->x * sin(deg) + vect->y * cos(deg);
+    vect->y = vect->x * sin(deg) + vect->y * cos(deg);
     vect->x = newX;
-    vect -> y = newY;
+}
+
+void drawLineToScreen(char screen[], int x, int lineSize)
+{
+    int gap = (SCREEN_HEIGHT - lineSize) / 2;
+    for (int y = gap; y < SCREEN_HEIGHT - gap; y++)
+    {
+        screen[y * SCREEN_WIDTH + x] = '+' ;
+    }
+}
+
+void drawScreen()
+{
+    char screen[SCREEN_WIDTH * SCREEN_HEIGHT];
+    for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++)
+    {
+        screen[i] = ' ';
+    }
+    const float radiansFactor = 0.01745329f;
+    float thetaPerStep = (float)FOV / (float)SCREEN_WIDTH * radiansFactor;
+    float viewDistance = 10.0f;
+
+    for (int x = 0; x < SCREEN_WIDTH; x++)
+    {
+        Vector2D rayVector = { facing.x * viewDistance, facing.y * viewDistance };
+        float theta = -(FOV / 2) + x * thetaPerStep;
+        rotateVector(&rayVector, theta);
+        for (int i = 0; i < 4; i++)
+        {
+            Collision2D col = Collision2D::LineLine(pos.x, pos.y, pos.x + rayVector.x, pos.y + rayVector.y, lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2);
+            if (!col.getCollisionOccurred()) continue;
+            // get the distance
+            float* intersectionPointer = col.getIntersection();
+            float intersectionX = *intersectionPointer;
+            float intersectionY = *(intersectionPointer + 1);
+            float dx = intersectionX - pos.x;
+            float dy = intersectionY - pos.y;
+            float distance = sqrt(dx * dx + dy * dy);
+
+            // calc line height from distance
+            int size = round((float)(SCREEN_HEIGHT) / distance);
+
+            drawLineToScreen(screen, x, size);
+        }
+    }
+    char buffer[SCREEN_WIDTH * 2 * SCREEN_HEIGHT + SCREEN_HEIGHT];
+    int bufferIndex = 0;
+    for (int y = 0; y < SCREEN_HEIGHT; y++)
+    {
+        for (int x = 0; x < SCREEN_WIDTH; x++)
+        {
+            buffer[bufferIndex++] = screen[y * SCREEN_WIDTH + x];
+            buffer[bufferIndex++] = ' ';
+        }
+        buffer[bufferIndex++] = '\n';
+    }
+    cout << "\033[2J\033[1;1H" << buffer; // clear screen and draw from buffer
 }
 
 bool handleControls()
@@ -142,13 +204,13 @@ int main()
     using namespace std::chrono; // nanoseconds, system_clock, seconds
     
     bool keepGoing = true;
-    drawMap();
     while (keepGoing)
     {
-        drawMap();
+        drawScreen();
+        //drawMap();
         keepGoing = handleControls();
-        cout << "\nfacing.x=" << facing.x << endl;
-        cout << "facing.y=" << facing.y << endl;
+        //cout << "\nfacing.x=" << facing.x << endl;
+        //cout << "facing.y=" << facing.y << endl;
         sleep_for(nanoseconds(1000));
     }
 }
