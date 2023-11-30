@@ -26,8 +26,10 @@ void drawLinesToMap(char map[], Line lines[], int numberOfLines)
 void drawMap(Vector2D pos, Vector2D facing, Line lines[])
 {
     //initialise map
-    char map[MAP_WIDTH * MAP_HEIGHT];
-    initializeCharArray(map, MAP_WIDTH * MAP_HEIGHT, ' ');
+    const int mapArraySize = MAP_WIDTH * MAP_HEIGHT;
+    char map[mapArraySize];
+    
+    initializeCharArray(map, mapArraySize , ' ');
 
     drawLinesToMap(map, lines, 4);
 
@@ -37,7 +39,8 @@ void drawMap(Vector2D pos, Vector2D facing, Line lines[])
     // draw player facing vector
     int facingMarkerX = roundToInt(pos.x) + roundToInt(facing.x);
     int facingMarkerY = roundToInt(pos.y) + roundToInt(facing.y);
-    map[facingMarkerY * MAP_WIDTH + facingMarkerX] = '+';
+    int facingMarkerIndex = facingMarkerY * MAP_WIDTH + facingMarkerX;
+    if(facingMarkerIndex <= mapArraySize) map[facingMarkerIndex] = '+';
 
     char buffer[MAP_WIDTH * 2 * MAP_HEIGHT + MAP_HEIGHT];
     int bufferIndex = 0;
