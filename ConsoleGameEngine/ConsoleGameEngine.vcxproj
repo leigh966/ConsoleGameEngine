@@ -128,10 +128,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collision2D.cpp" />
-    <ClCompile Include="ConsoleGameEngine.cpp" />
+    <ClCompile Include="Controls.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Controls.h" />
+    <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision2D.h" />
+    <ClInclude Include="ConsoleEngineMath.h" />
+    <ClInclude Include="ConsoleMap.h" />
+    <ClInclude Include="ConsoleScreen.h" />
+    <ClInclude Include="ImageGrid.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

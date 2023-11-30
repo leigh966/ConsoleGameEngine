@@ -15,15 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConsoleGameEngine.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Collision2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Controls.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleEngineMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
