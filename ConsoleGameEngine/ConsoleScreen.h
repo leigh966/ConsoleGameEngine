@@ -7,7 +7,7 @@
 #include "Vector2D.h"
 using namespace std;
 
-const int SCREEN_WIDTH = 100, SCREEN_HEIGHT = 50;
+const int SCREEN_WIDTH = 150, SCREEN_HEIGHT = 150;
 
 const int FOV = 90;
 
@@ -53,4 +53,5 @@ void drawScreen(Vector2D pos, Vector2D facing, Line lines[])
     char buffer[SCREEN_WIDTH * 2 * SCREEN_HEIGHT + SCREEN_HEIGHT];
     drawToBuffer(screen, buffer, SCREEN_WIDTH, SCREEN_HEIGHT);
     cout << "\033[2J\033[1;1H" << buffer; // clear screen and draw from buffer
+    //cout << "\r" << buffer << flush; // possible alternative for high resolutions but causes almost CRT style wobble
 }
