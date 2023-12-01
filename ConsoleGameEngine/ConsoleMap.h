@@ -23,25 +23,42 @@ void drawLinesToMap(char map[], Line lines[], int numberOfLines)
     }
 }
 
-void drawMap(Vector2D pos, Vector2D facing, Line lines[])
+bool posOnMap(int x, int y)
+{
+    return x > 0 && y > 0 && x < MAP_WIDTH && y < MAP_HEIGHT;
+}
+
+const int mapArraySize = MAP_WIDTH * MAP_HEIGHT;
+char* getMap(Vector2D pos, Vector2D facing, Line lines[])
 {
     //initialise map
-    const int mapArraySize = MAP_WIDTH * MAP_HEIGHT;
     char map[mapArraySize];
-    
-    initializeCharArray(map, mapArraySize , ' ');
+
+    initializeCharArray(map, mapArraySize, ' ');
 
     drawLinesToMap(map, lines, 4);
 
     // draw player
-    map[roundToInt(pos.y) * MAP_WIDTH + roundToInt(pos.x)] = 'p';
+    if (posOnMap(pos.x, pos.y))
+    {
+        int playerIndex = roundToInt(pos.y) * MAP_WIDTH + roundToInt(pos.x);
+        map[playerIndex] = 'p';
+    }
 
     // draw player facing vector
     int facingMarkerX = roundToInt(pos.x) + roundToInt(facing.x);
     int facingMarkerY = roundToInt(pos.y) + roundToInt(facing.y);
-    int facingMarkerIndex = facingMarkerY * MAP_WIDTH + facingMarkerX;
-    if(facingMarkerIndex <= mapArraySize) map[facingMarkerIndex] = '+';
+    if (posOnMap(facingMarkerX, facingMarkerY))
+    {
+        int facingMarkerIndex = facingMarkerY * MAP_WIDTH + facingMarkerX;
+        map[facingMarkerIndex] = '+';
+    }
+    return map;
+}
 
+void drawMap(Vector2D pos, Vector2D facing, Line lines[])
+{
+    char* map = getMap(pos, facing, lines);
     char buffer[MAP_WIDTH * 2 * MAP_HEIGHT + MAP_HEIGHT];
     int bufferIndex = 0;
     for (int y = 0; y < MAP_HEIGHT; y++)

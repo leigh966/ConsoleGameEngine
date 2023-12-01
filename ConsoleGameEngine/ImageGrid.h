@@ -20,3 +20,13 @@ void drawToBuffer(char arr[], char buffer[], int width, int height)
         buffer[bufferIndex++] = '\n';
     }
 }
+
+void drawImageOntoArray(char* arr, int arrWidth, int arrHeight, char* image, int imageWidth, int imageHeight, int startX, int startY)
+{
+    for (int y = 0; y < imageHeight; y++)
+    {
+        int startIndex = (startY + y) * arrWidth + startX;
+        std::copy(image + (y * imageWidth), image + (y * imageWidth) + imageWidth, arr + startIndex);
+    }
+    
+}
