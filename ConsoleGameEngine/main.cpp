@@ -21,8 +21,8 @@ int main()
     bool keepGoing = true;
     while (keepGoing)
     {
-        //drawScreen(pos, facing, lines);
-        drawMap(pos, facing, lines);
+        drawScreen(pos, facing, lines);
+        //drawMap(pos, facing, lines);
         keepGoing = handleControls(&pos,&facing);
         //cout << "\nfacing.x=" << facing.x << endl;
         //cout << "facing.y=" << facing.y << endl;

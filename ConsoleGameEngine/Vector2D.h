@@ -1,8 +1,9 @@
 #pragma once
 #include <cmath>
-struct Vector2D
+class Vector2D
 {
+public:
     float x, y;
+    static void rotateVector(Vector2D* vect, float deg);
+    void normalize();
 };
-
-void rotateVector(Vector2D* vect, float deg);

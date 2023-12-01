@@ -1,4 +1,6 @@
 #pragma once
+#include "ConsoleEngineMath.h"
+#include "Vector2D.h"
 class Collision2D
 {
 private:
@@ -38,4 +40,6 @@ public:
 		return intersection;
 	}
 	static Collision2D LineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+	static Collision2D CircleLine(float circleX, float circleY, float circleRadius, float lineX1, float lineY1, float lineX2, float lineY2);
+	static Collision2D LinePoint(float pointX, float pointY, float lineX1, float lineY1, float lineX2, float lineY2);
 };

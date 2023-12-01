@@ -4,6 +4,7 @@
 #include "Collision2D.h"
 #include "Line.h"
 #include <iostream>
+#include "Vector2D.h"
 using namespace std;
 
 const int SCREEN_WIDTH = 100, SCREEN_HEIGHT = 50;
@@ -21,8 +22,9 @@ void drawLineToScreen(char screen[], int x, int lineSize)
 
 void drawScreen(Vector2D pos, Vector2D facing, Line lines[])
 {
-    char screen[SCREEN_WIDTH * SCREEN_HEIGHT];
-    initializeCharArray(screen, SCREEN_WIDTH * SCREEN_HEIGHT, ' ');
+    const int screenArraySize = SCREEN_WIDTH * SCREEN_HEIGHT;
+    char screen[screenArraySize];
+    initializeCharArray(screen, screenArraySize, ' ');
     const float radiansFactor = 0.01745329f;
     float thetaPerStep = (float)FOV / (float)SCREEN_WIDTH * radiansFactor;
     float viewDistance = 10.0f;
@@ -31,7 +33,7 @@ void drawScreen(Vector2D pos, Vector2D facing, Line lines[])
     {
         Vector2D rayVector = { facing.x * viewDistance, facing.y * viewDistance };
         float theta = -(FOV / 2) + x * thetaPerStep;
-        rotateVector(&rayVector, theta);
+        Vector2D::rotateVector(&rayVector, theta);
         for (int i = 0; i < 4; i++)
         {
             Collision2D col = Collision2D::LineLine(pos.x, pos.y, pos.x + rayVector.x, pos.y + rayVector.y, lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2);
@@ -45,7 +47,7 @@ void drawScreen(Vector2D pos, Vector2D facing, Line lines[])
             // calc line height from distance
             int size = round((float)(SCREEN_HEIGHT) / distance);
 
-            drawLineToScreen(screen, x, size);
+            if(size < SCREEN_HEIGHT && size>0) drawLineToScreen(screen, x, size);
         }
     }
     char buffer[SCREEN_WIDTH * 2 * SCREEN_HEIGHT + SCREEN_HEIGHT];

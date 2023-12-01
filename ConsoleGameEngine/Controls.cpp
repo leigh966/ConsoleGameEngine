@@ -15,8 +15,9 @@ void moveForward(Vector2D* pos, Vector2D* facing, float speed)
 
 void moveRight(Vector2D* pos, Vector2D* facing, float speed)
 {
-    pos->x += facing->y * speed;
-    pos->y += facing->x * speed;
+    Vector2D right = *facing;
+    Vector2D::rotateVector(&right, 3.14/2);
+    moveForward(pos, &right, speed);
 }
 
 bool handleControls(Vector2D* pos, Vector2D* facing)
@@ -46,11 +47,11 @@ bool handleControls(Vector2D* pos, Vector2D* facing)
     const float turnSpeed = 0.1f;
     if (keyDown('P'))
     {
-        rotateVector(facing, turnSpeed);
+        Vector2D::rotateVector(facing, turnSpeed);
     }
     if (keyDown('O'))
     {
-        rotateVector(facing, -turnSpeed);
+        Vector2D::rotateVector(facing, -turnSpeed);
     }
     return true;
 }
