@@ -10,3 +10,4 @@
 #include "ConsoleMap.h"
 #include "ConsoleScreen.h"
 #include "Line.h"
+#include "CollisionResolution2D.h"

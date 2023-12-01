@@ -37,6 +37,7 @@ int main()
         drawScreenWithMap(pos, facing, lines);
         //drawMap(pos, facing, lines);
         keepGoing = handleControls(&pos,&facing);
+        ResolvePlayerLineCollision(&pos, lines, 4);
         //cout << "\nfacing.x=" << facing.x << endl;
         //cout << "facing.y=" << facing.y << endl;
         sleep_for(nanoseconds(1000));

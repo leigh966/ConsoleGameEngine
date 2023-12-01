@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision2D.h" />
+    <ClInclude Include="CollisionResolution2D.h" />
     <ClInclude Include="ConsoleEngineMath.h" />
     <ClInclude Include="ConsoleMap.h" />
     <ClInclude Include="ConsoleScreen.h" />

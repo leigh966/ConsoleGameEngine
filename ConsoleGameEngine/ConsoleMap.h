@@ -71,5 +71,6 @@ void drawMap(Vector2D pos, Vector2D facing, Line lines[])
         buffer[bufferIndex++] = '\n';
     }
     cout << "\033[2J\033[1;1H" << buffer; // clear screen and draw from buffer
+    delete map;
 }
 

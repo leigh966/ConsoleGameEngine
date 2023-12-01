@@ -12,3 +12,9 @@ void Vector2D::normalize()
     this->x /= magnitude;
     this->y /= magnitude;
 }
+
+void Vector2D::transform(float x, float y)
+{
+    this->x += x;
+    this->y += y;
+}
