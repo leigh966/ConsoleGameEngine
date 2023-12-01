@@ -44,8 +44,8 @@ void raycastToScreen(Vector2D pos, Vector2D facing, Line lines[], char* screen)
 
             // calc line height from distance
             int size = round((float)(SCREEN_HEIGHT) / distance);
-
-            if (size < SCREEN_HEIGHT && size>0) drawLineToScreen(screen, x, size);
+            if (size >= SCREEN_HEIGHT) size = SCREEN_HEIGHT - 1;
+            if (size>0) drawLineToScreen(screen, x, size);
         }
     }
 }
